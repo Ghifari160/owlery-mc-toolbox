@@ -1,0 +1,10 @@
+# OS Binaries
+## Windows
+Thumbs.db
+
+## macOS
+.DS_Store
+
+# Project
+Build/
+DerivedData/
