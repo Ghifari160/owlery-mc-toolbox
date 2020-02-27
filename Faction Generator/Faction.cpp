@@ -1,7 +1,7 @@
 // Faction.cpp
 //
 // Owlery Community Server Toolbox
-// Faction Generator v0.1.0
+// Faction Generator
 //
 // Copyright © 2020 GHIFARI160.
 
@@ -89,24 +89,37 @@ bool Faction::setSuffix(std::string teamSuffix)
     return true;
 }
 
-bool Faction::initTeam(Team *team)
+bool Faction::initTeam(Team &team)
 {
-    team->setCollisionRule(getCollisionRule());
-    team->setColor(getColor());
-    team->setDeathMessageVisibility(getDeathMessageVisibility());
-    team->setFriendlyFire(getFriendlyFire());
-    team->setNametagVisibility(getNametagVisibility());
-    team->setFriendlyInvisibiles(getFriendlyInvisibles());
+    team.setCollisionRule(getCollisionRule());
+    team.setColor(getColor());
+    team.setDeathMessageVisibility(getDeathMessageVisibility());
+    team.setFriendlyFire(getFriendlyFire());
+    team.setNametagVisibility(getNametagVisibility());
+    team.setFriendlyInvisibiles(getFriendlyInvisibles());
     
     return true;
 }
 
+bool Faction::checkForDuplicateTeam(const Team &team)
+{
+    bool duplicate = false;
+    
+    for(Team t : getTeams())
+    {
+        if(t.getName() == team.getName())
+            duplicate = true;
+    }
+    
+    return duplicate;
+}
+
 bool Faction::addTeam(Team team)
 {
-    if(teams.size() < 1)
-        ti = teams.begin();
+    if(checkForDuplicateTeam(team))
+        return false;
     
-    ti = teams.insert(ti, team);
+    teams.push_back(team);
     
     return true;
 }
@@ -161,14 +174,23 @@ std::string Faction::getSuffix() const
     return suffix;
 }
 
-std::string Faction::getTeamsList() const
+std::string Faction::getTeamsList(const bool verticalList) const
 {
     std::string teamsList = "";
     
     for(unsigned int i = 0; i < teams.size(); i++)
-        teamsList += " " + teams[i].getDisplayName() + "(" + teams[i].getName() + ")";
+    {
+        teamsList += ((verticalList) ? " - " : " ")
+                 + teams[i].getDisplayName() + "(" + teams[i].getName() + ")"
+                 + ((verticalList) ? "\n" : ", ");
+    }
     
     return teamsList;
+}
+
+std::string Faction::getTeamsList() const
+{
+    return getTeamsList(false);
 }
 
 std::vector<Team> Faction::getTeams() const

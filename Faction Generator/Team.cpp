@@ -1,11 +1,15 @@
 // Team.cpp
 //
 // Owlery Community Server Toolbox
-// Faction Generator v0.1.0
+// Faction Generator
 //
 // Copyright © 2020 GHIFARI160.
 
 #include "Team.h"
+
+Team::Team()
+: name(), displayName()
+{}
 
 Team::Team(std::string teamName)
 : name{teamName}, displayName{teamName}
@@ -154,7 +158,8 @@ std::string Team::getCommand_init() const
 
 std::string Team::getCommand_collisionRule() const
 {
-    return getCommandBase() + "collisionRule " + getCollisionRule();
+    return (getCollisionRule() == "always") ? ""
+        : getCommandBase() + "collisionRule " + getCollisionRule();
 }
 
 std::string Team::getCommand_color() const
@@ -164,17 +169,20 @@ std::string Team::getCommand_color() const
 
 std::string Team::getCommand_deathMessageVisibility() const
 {
-    return getCommandBase() + "deathMessageVisibility " + getDeathMessageVisibility();
+    return (getDeathMessageVisibility() == "always") ? ""
+        : getCommandBase() + "deathMessageVisibility " + getDeathMessageVisibility();
 }
 
 std::string Team::getCommand_friendlyFire() const
 {
-    return getCommandBase() + "friendlyFire " + getFriendlyFire();
+    return (getFriendlyFire() == "true") ? ""
+        : getCommandBase() + "friendlyFire " + getFriendlyFire();
 }
 
 std::string Team::getCommand_nametagVisibility() const
 {
-    return getCommandBase() + "nametagVisibility " + getNametagVisibility();
+    return (getNametagVisibility() == "always") ? ""
+        : getCommandBase() + "nametagVisibility " + getNametagVisibility();
 }
 
 std::string Team::getCommand_prefix() const
@@ -184,7 +192,8 @@ std::string Team::getCommand_prefix() const
 
 std::string Team::getCommand_seeFriendlyInvisibles() const
 {
-    return getCommandBase() + "seeFriendlyInvisibles " + getFriendlyInvisibles();
+    return (getFriendlyInvisibles() == "true") ? ""
+        : getCommandBase() + "seeFriendlyInvisibles " + getFriendlyInvisibles();
 }
 
 std::string Team::getCommand_suffix() const
